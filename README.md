@@ -1,4 +1,4 @@
 Um bot simples utilizado para um servidor privado de RPG.
 
-# Funções
+## Funções
 - Rolagem de Dados
