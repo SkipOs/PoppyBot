@@ -4,10 +4,12 @@ module.exports = (message) => {
   const result = diceHandler(message.content);
   if (result === null) return;
   message.reply(result.join('\n'));
+  console.log('\n');
   //console.log(result.join('\n'));
 };
 
 function diceHandler(text) {
+  //Identifica a existência de dados e a quantidade de vezes que deve realizar uma rolagem
   // Expressão regular para identificar números, '#', e 'xdy'
   const regex = /(\d*d\d+|\d+|#)/g;
 
@@ -47,6 +49,13 @@ function diceRollManager(expression) {
 
   // Soma final dos dados
   const val = [];
+
+  // Guia para encontrar os valores de dados
+  const regex = /(\d*)d(\d+)/;
+
+  expression.forEach((content, pos) => {
+    console.log('Valor: ' + content + '| Posição: ' + pos);
+  });
 
   result.push('` x `  ⟵  ' + expression.join(' + '));
 
