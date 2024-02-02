@@ -1,4 +1,4 @@
 module.exports = (message) => {
-  if (message.author.bot === true) return true;
-  console.log(message.content);
+  if (message.author.bot) return;
+  // console.log(message.content);
 };

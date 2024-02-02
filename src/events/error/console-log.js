@@ -1,3 +1,7 @@
 module.exports = (error) => {
-  console.log(`${error}`);
+  try {
+  } catch (error) {
+    console.log(error);
+    return;
+  }
 };
