@@ -94,5 +94,5 @@ function diceRoll(qtd, faces) {
     }
     soma += roll;
   }
-  return { soma, valores };
+  return { soma, valores }; //Comentario Teste
 }
