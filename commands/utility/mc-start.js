@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require("discord.js");
 const axios = require("axios").create({
     socketPath: "/run/podman/podman.sock",
+    baseURL: "http://localhost",
     timeout: 5000
 });
 
@@ -14,14 +15,13 @@ module.exports = {
         try {
             const containerName = "minecraft";
 
-            // Tenta iniciar
             const res = await axios.post(`/v4.0.0/libpod/containers/${containerName}/start`);
 
             if (res.status === 204) {
                 return interaction.editReply("🚀 Iniciando o servidor Minecraft! Aguarde um instante…");
-            } else {
-                return interaction.editReply("⚠️ Recebi uma resposta inesperada ao tentar iniciar o servidor.");
             }
+
+            return interaction.editReply("⚠️ Resposta inesperada ao tentar iniciar o servidor.");
 
         } catch (err) {
             console.error(err);
