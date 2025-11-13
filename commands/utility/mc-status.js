@@ -11,7 +11,7 @@ module.exports = {
         .setDescription('Mostra o status do servidor Minecraft oasis.'),
     async execute(interaction) {
        await interaction.deferReply();
-    
+             axios.get('http://localhost:25565/status').then(async (res) => {
             try {
                 const containerName = "minecraft";
     
