@@ -16,7 +16,7 @@ module.exports = {
         try {
             const containerName = "minecraft";
 
-            const res = await axios.get(`/v4.0.0/libpod/containers/${containerName}/json`);
+            const res = await axios.get('http://host.containers.internal:8080/v4.0.0/libpod/containers/minecraft/json');
 
             if (res.data?.State?.Running) {
                 return interaction.editReply("🟢 O servidor Minecraft está **rodando**!");
