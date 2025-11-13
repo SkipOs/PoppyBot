@@ -15,7 +15,7 @@ module.exports = {
         try {
             const containerName = "minecraft";
 
-            const res = await axios.post(`/v4.0.0/libpod/containers/${containerName}/start`);
+            axios.get('http://host.containers.internal:8080/v4.0.0/libpod/containers/minecraft/json')
 
             if (res.status === 204) {
                 return interaction.editReply("🚀 Iniciando o servidor Minecraft! Aguarde um instante…");
