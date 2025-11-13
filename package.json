@@ -1,4 +1,23 @@
 {
+  "name": "poppybot",
+  "version": "1.0.0",
+  "description": "Bot pessoal de testes e uso hobbysta.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SkipOs/PoppyBot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/SkipOs/PoppyBot/issues"
+  },
+  "homepage": "https://github.com/SkipOs/PoppyBot#readme",
   "dependencies": {
     "axios": "^1.13.2",
     "discord.js": "^14.24.2",
