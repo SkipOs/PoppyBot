@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder } = require("discord.js");
 const axios = require("axios").create({
     socketPath: "/run/podman/podman.sock",
     timeout: 5000
@@ -10,29 +10,23 @@ module.exports = {
         .setName('mc-status')
         .setDescription('Mostra o status do servidor Minecraft oasis.'),
     async execute(interaction) {
-       await interaction.deferReply();
-            axios.get('http://localhost:25565/status').then(async (res) => {
-            try {
-                const containerName = "minecraft";
-    
-                // Tenta iniciar
-                const res = await axios.post(`/v4.0.0/libpod/containers/${containerName}/start`);
-    
-                if (res.status === 204) {
-                    return interaction.editReply("🚀 Iniciando o servidor Minecraft! Aguarde um instante…");
-                } else {
-                    return interaction.editReply("⚠️ Recebi uma resposta inesperada ao tentar iniciar o servidor.");
-                }
-    
-            } catch (err) {
-                console.error(err);
-    
-                if (err.response?.status === 304) {
-                    return interaction.editReply("🟨 O servidor já estava rodando!");
-                }
-    
-                return interaction.editReply("❌ Erro ao iniciar o servidor Minecraft.");
+        await interaction.deferReply();
+
+        try {
+            const containerName = "minecraft";
+
+            // Puxa status do container no Podman
+            const res = await axios.get(`/v4.0.0/libpod/containers/${containerName}/json`);
+
+            if (res.data?.State?.Running) {
+                return interaction.editReply("🟢 O servidor Minecraft está **rodando**!");
+            } else {
+                return interaction.editReply("🔴 O servidor Minecraft está **parado**.");
             }
-        });
+
+        } catch (err) {
+            console.error(err);
+            return interaction.editReply("❌ Não consegui obter o status do servidor Minecraft.");
+        }
     },
 };
