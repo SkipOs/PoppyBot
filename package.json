@@ -19,8 +19,9 @@
   },
   "homepage": "https://github.com/SkipOs/PoppyBot#readme",
   "dependencies": {
-    "discord.js": "^14.18.0",
-    "dotenv": "^16.5.0",
-    "node": "^22.15.0",
+    "axios": "^1.13.2",
+    "discord.js": "^14.24.2",
+    "dotenv": "^17.2.3",
+    "node": "^25.2.0"
   }
 }
