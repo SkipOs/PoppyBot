@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require("discord.js");
 const axios = require("axios").create({
     socketPath: "/run/podman/podman.sock",
+    baseURL: "http://localhost", // axios precisa disso pra montar URL
     timeout: 5000
 });
 
@@ -15,7 +16,6 @@ module.exports = {
         try {
             const containerName = "minecraft";
 
-            // Puxa status do container no Podman
             const res = await axios.get(`/v4.0.0/libpod/containers/${containerName}/json`);
 
             if (res.data?.State?.Running) {
