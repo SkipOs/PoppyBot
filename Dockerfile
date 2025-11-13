@@ -1,7 +1,6 @@
 # Usa a imagem oficial do Node (leve e estável)
 FROM node:22-slim
 
--v /run/podman/podman.sock:/run/podman/podman.sock
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci --omit=dev
