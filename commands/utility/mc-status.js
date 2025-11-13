@@ -1,5 +1,8 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { exec } = require('child_process');
+const axios = require("axios").create({
+    socketPath: "/run/podman/podman.sock",
+    timeout: 5000
+});
 
 module.exports = {
     cooldown: 5,
@@ -7,19 +10,28 @@ module.exports = {
         .setName('mc-status')
         .setDescription('Mostra o status do servidor Minecraft oasis.'),
     async execute(interaction) {
-        await interaction.deferReply();
-
-        exec('podman inspect --format "{{.State.Running}}" minecraft', (error, stdout) => {
-            if (error) {
-                interaction.editReply('❌ Não foi possível obter o status do servidor.');
-                return;
-            }
-
-            const isRunning = stdout.trim() === 'true';
-            if (isRunning) {
-                interaction.editReply('🟢 O servidor Minecraft está **online**!');
-            } else {
-                interaction.editReply('🔴 O servidor Minecraft está **offline**.');
+       await interaction.deferReply();
+    
+            try {
+                const containerName = "minecraft";
+    
+                // Tenta iniciar
+                const res = await axios.post(`/v4.0.0/libpod/containers/${containerName}/start`);
+    
+                if (res.status === 204) {
+                    return interaction.editReply("🚀 Iniciando o servidor Minecraft! Aguarde um instante…");
+                } else {
+                    return interaction.editReply("⚠️ Recebi uma resposta inesperada ao tentar iniciar o servidor.");
+                }
+    
+            } catch (err) {
+                console.error(err);
+    
+                if (err.response?.status === 304) {
+                    return interaction.editReply("🟨 O servidor já estava rodando!");
+                }
+    
+                return interaction.editReply("❌ Erro ao iniciar o servidor Minecraft.");
             }
         });
     },
