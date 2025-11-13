@@ -29,6 +29,7 @@ module.exports = {
             if (err.response?.status === 304) {
                 return interaction.editReply("🟨 O servidor já estava rodando!");
             }
+
             return interaction.editReply("❌ Erro ao iniciar o servidor Minecraft.");
         }
     },
