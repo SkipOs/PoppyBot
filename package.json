@@ -22,6 +22,7 @@
     "axios": "^1.13.2",
     "discord.js": "^14.24.2",
     "dotenv": "^17.2.3",
+    "minecraft-server-util": "^5.4.4",
     "node": "^25.2.0"
   }
 }

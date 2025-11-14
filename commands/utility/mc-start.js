@@ -1,9 +1,5 @@
 const { SlashCommandBuilder } = require("discord.js");
-const axios = require("axios").create({
-    socketPath: "/run/podman/podman.sock",
-    baseURL: "http://localhost",
-    timeout: 5000
-});
+const { exec } = require("child_process");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -15,22 +11,32 @@ module.exports = {
         try {
             const containerName = "minecraft";
 
-            const res = await axios.get('http://host.containers.internal:8080/v4.0.0/libpod/containers/minecraft/json')
+            // Antes de iniciar: checar se já está rodando
+            exec(`podman ps --filter "name=${containerName}" --format "{{.Status}}"`, (err, stdout) => {
+                if (err) {
+                    console.error(err);
+                    return interaction.editReply("❌ Erro ao consultar o Podman.");
+                }
 
-            if (res.status === 204) {
-                return interaction.editReply("🚀 Iniciando o servidor Minecraft! Aguarde um instante…");
-            }
+                const status = stdout.trim();
+                if (status.includes("Up")) {
+                    return interaction.editReply("🟨 O servidor **já está rodando**!");
+                }
 
-            return interaction.editReply("⚠️ Resposta inesperada ao tentar iniciar o servidor.");
+                // Se não está rodando → iniciar
+                exec(`podman start ${containerName}`, (err2, stdout2, stderr2) => {
+                    if (err2) {
+                        console.error(stderr2 || err2);
+                        return interaction.editReply("❌ Erro ao iniciar o servidor Minecraft.");
+                    }
+
+                    return interaction.editReply("🚀 O servidor Minecraft está **iniciando**! Aguarde alguns segundos…");
+                });
+            });
 
         } catch (err) {
             console.error(err);
-
-            if (err.response?.status === 304) {
-                return interaction.editReply("🟨 O servidor já estava rodando!");
-            }
-
-            return interaction.editReply("❌ Erro ao iniciar o servidor Minecraft.");
+            return interaction.editReply("❌ Ocorreu um erro inesperado ao tentar iniciar o servidor.");
         }
     },
 };

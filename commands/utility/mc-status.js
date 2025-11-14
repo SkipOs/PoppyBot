@@ -1,9 +1,5 @@
 const { SlashCommandBuilder } = require("discord.js");
-const axios = require("axios").create({
-    socketPath: "/run/podman/podman.sock",
-    baseURL: "http://localhost", // axios precisa disso pra montar URL
-    timeout: 5000
-});
+const { exec } = require("child_process");
 
 module.exports = {
     cooldown: 5,
@@ -14,15 +10,25 @@ module.exports = {
         await interaction.deferReply();
 
         try {
-            const containerName = "minecraft";
 
-            const res = await axios.get('http://host.containers.internal:8080/v4.0.0/libpod/containers/minecraft/json');
+            exec('podman ps --filter "name=minecraft" --format "{{.Status}}"', (err, stdout) => {
+                if (err) {
+                    console.error(err);
+                    return interaction.editReply("❌ Erro ao consultar o Podman.");
+                }
 
-            if (res.data?.State?.Running) {
-                return interaction.editReply("🟢 O servidor Minecraft está **rodando**!");
-            } else {
+                const status = stdout.trim();
+
+                if (!status) {
+                    return interaction.editReply("🔴 O servidor Minecraft está **parado**.");
+                }
+
+                if (status.includes("Up")) {
+                    return interaction.editReply("🟢 O servidor Minecraft está **rodando**!");
+                }
+
                 return interaction.editReply("🔴 O servidor Minecraft está **parado**.");
-            }
+            });
 
         } catch (err) {
             console.error(err);
