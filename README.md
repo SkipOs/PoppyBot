@@ -27,8 +27,8 @@ The diagram shows how the ecosystem is built and where each part is connected. T
 ## Commands 
 PoppyBOT is built used slash-commands, and when updating or adding a new one on ``commands/utility/`` you should also run ``node deploy-commands.js`` right after, so your changes are effectively sent and deployed.
 
-``/mc-start`` - Start the minecraft server. Duh.
-``/mc-status`` - Check then actual mc container status. 
-``/ping`` - Doesn't really ping anything, Answer with Pong. Used to see if the bost is listening. This can be helpful while getting the bot to work.
-``/server`` - Answer with info on the actual server.
-``/user`` - Answer with the info on the user who sent the command.
+- ``/mc-start`` - Start the minecraft server. Duh.
+- ``/mc-status`` - Check then actual mc container status. 
+- ``/ping`` - Doesn't really ping anything, Answer with Pong. Used to see if the bost is listening. This can be helpful while getting the bot to work.
+- ``/server`` - Answer with info on the actual server.
+- ``/user`` - Answer with the info on the user who sent the command.
